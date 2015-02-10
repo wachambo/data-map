@@ -29,10 +29,6 @@ public:
 	/** Constructor
 	 */
 	DataMapIterator(): DataMap() , it(configs->root), kind(NULL) {}
-	
-	/** Destructor by default
-	 */
-	//DataMapIterator() : ~DataMap();
 
 	/** Reset iterator: iterator points to configs root, if any, else points to measures root
 		@return if root node exists
@@ -77,8 +73,7 @@ public:
 			if (it == configs->last) { 
 				it = measures->root; 
 				this->kind = "GM";
-			} else 
-				it = it->next;
+			} else it = it->next;
 			return true;
 		} 
 		key = value = kind = NULL;

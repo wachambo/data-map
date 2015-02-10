@@ -43,8 +43,6 @@ public:
 									const char* path, 
 									const int port): Storage(), DataMapTTOpen(), DataMapIterator()
 	{
-		//this->ttclient = &client;
-
 		ttclient = new TTClient(client, internalID, server, path, port);
 	}
 	
@@ -52,8 +50,6 @@ public:
 	 */
 	~TTOpenDataMapStorageCloudProto0()
 	{
-		//delete server;
-		//delete path;
 		delete ttclient;
 	}
 
@@ -76,13 +72,11 @@ public:
 		String kind;
 		if (first()) {
 			while (next(&key, &value, &kind)) {
-				Serial.println("-->"+key+" "+value+ " "+kind);
-				ttclient->writeData(key, value, kind);
+ 				ttclient->writeData(key, value, kind);
+				//Read from the Cloud
+				ttclient->readData();
 			}
 		}
-		// Read from the Cloud
-		//ttclient->readData();
-
 			
 		// Update the map
 		// TODO 
