@@ -121,16 +121,64 @@ public:
 		client->stop();
 	}
 
-	/** TODO		
+	/** Given a string, 
+		param[in/out]	str: string 
+		param[out]		key
+		param[out]		value		
 	 */
-	void parseData(String* str) {
-		int from = 0;
-		int to = 0;
+	void parseData(String* str, String* key, String* value) {
+		String split_sharp;
+		String split_comma;
+
+		split_sharp = getToken(str, '#'))
+		if ((split_comma = getToken(split_sharp, ',')) == "GM") {
+			split_sharp.remove(0, split_comma.length());
+			split_comma = getToken(split_sharp, ',');
+		}
+
+		
+		str->remove(0, split_sharp->length());
+
 		while (char_in = str.charAt(i))
 			if (char_in == '#')
 				token = str.substring(from, to);
 			to++;
 	}
+
+	/** Given a string, return the first occurrence of the token if the string is splitted by the delimiter
+		Remove the token and the delimiter in the original string
+		param[in/out]	string
+		param[in]		delimiter
+		Return the token if exists, else NULL
+	 */
+	String getToken(String* str, const char delimiter) {
+		String token;
+
+		if (!str) 
+			return "";
+
+		int index = str->indexOf(delimiter, 0);
+		//Serial.println(index);
+		//delay(1000);
+		if (index != -1) {
+			token = str->substring(0, index);
+			//Serial.println(token);
+			*str = str->substring(index+1);
+			//Serial.println(*str);
+			return token;
+		}
+		return "";
+	}
+
+	/* TEST getToken
+	String prueba = "#3,GM,key,value,0$";
+	String token;
+
+	do {
+		token = getToken(&prueba, ',');
+		Serial.println(token);
+	} while (token.length());
+	*/
 protected:
 private:
 }; 
