@@ -130,6 +130,32 @@ public:
 		String split_sharp;
 		String split_comma;
 
+		split_sharp = getToken(str, '#');
+		Serial.println(split_sharp);
+
+		/*
+		int pos = 0;
+		do {
+			split_comma = getToken(split_sharp, ',');
+			Serial.println(split_comma);
+
+			if (pos == 1)
+			pos++;
+		} while (split_comma.length());
+		*/
+
+		for (int pos = 0; pos < 4; pos++) {
+			split_comma = getToken(split_sharp, ',');
+
+			switch(pos) {
+				case 1: if (split_comma.equals("GM")) return;	// we're only interested in GC"
+				case 2: *key = split_comma; break;
+				case 3: *value = split_comma; break;
+				default: break;
+			}
+		}
+
+		/*
 		split_sharp = getToken(str, '#'))
 		if ((split_comma = getToken(split_sharp, ',')) == "GM") {
 			split_sharp.remove(0, split_comma.length());
@@ -143,6 +169,7 @@ public:
 			if (char_in == '#')
 				token = str.substring(from, to);
 			to++;
+		*/
 	}
 
 	/** Given a string, return the first occurrence of the token if the string is splitted by the delimiter
@@ -169,16 +196,6 @@ public:
 		}
 		return "";
 	}
-
-	/* TEST getToken
-	String prueba = "#3,GM,key,value,0$";
-	String token;
-
-	do {
-		token = getToken(&prueba, ',');
-		Serial.println(token);
-	} while (token.length());
-	*/
 protected:
 private:
 }; 
