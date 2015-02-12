@@ -72,14 +72,26 @@ public:
 		String kind;
 		if (first()) {
 			while (next(&key, &value, &kind)) {
+				// Write map to Cloud
  				ttclient->writeData(key, value, kind);
-				//Read from the Cloud
-				ttclient->readData();
+				
+				//Read map from the Cloud
+				String response = ttclient->readData();
+
+				// Update the map
+				while (response.length()) {
+					ttclient->parseData(&response, &key, &value);	// TODO: deberia declara nuevas strigs key value???????
+
+					if (key.equals("") && value.equals(""))
+						continue;
+
+					Serial.print("\n\n\n");
+					Serial.println(key +"-"+ value);
+					Serial.print("\n\n\n");
+					add(key, value, "config");
+				}
 			}
 		}
-			
-		// Update the map
-		// TODO 
 
 		return true;	// TODO always true?
 	}

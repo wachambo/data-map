@@ -13,7 +13,7 @@ GPRS gprs;
 GSM gsmAccess(true); // include a 'true' parameter for debug enabled
 GSMClient theGSMClient;
 
-
+// instance the data map
 TTOpenDataMapStorageCloudProto0 DM(theGSMClient, INTERNAL_ID, "s1.tts01.net", "/Stack/Receive/", 80);
 
 
