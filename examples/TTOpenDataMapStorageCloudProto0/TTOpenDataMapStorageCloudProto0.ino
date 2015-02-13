@@ -10,7 +10,7 @@
 
 // initialize the library instance
 GPRS gprs;
-GSM gsmAccess(true); // include a 'true' parameter for debug enabled
+GSM gsmAccess(false); // include a 'true' parameter for debug enabled
 
 GSMClient theGSMClient;
 //TTClient theClient(theGSMClient, INTERNAL_ID, "s1.tts01.net", "/Stack/Receive/", 80);
