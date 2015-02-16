@@ -1,4 +1,3 @@
-
 #include <GSM.h>
 #include <TTOpenDataMapStorageCloudProto0.h>
 
@@ -11,7 +10,7 @@
 
 // initialize the library instance
 GPRS gprs;
-GSM gsmAccess(true); // include a 'true' parameter for debug enabled
+GSM gsmAccess(false); // include a 'true' parameter for debug enabled
 
 GSMClient theGSMClient;
 //TTClient theClient(theGSMClient, INTERNAL_ID, "s1.tts01.net", "/Stack/Receive/", 80);
@@ -26,7 +25,7 @@ void setup()
   // initialize serial communications
   Serial.begin(9600);
 
-  /*
+  
   // connection state
   boolean notConnected = true;
 
@@ -45,12 +44,11 @@ void setup()
   }
   Serial.println("GPRS inicializado.");
 
-  */
   
 
   Serial.println(DM.add("sensor0", "30 min", "config"));
   Serial.println(DM.add("temperature", "25.8", "measure"));
-  Serial.println(DM.add("location" , "4234.34234, 2895.234", "measure"));
+  Serial.println(DM.add("location" , "4234.34234-2895.234", "measure"));
   Serial.println(DM.add("zulu" , "12:09", "measure"));
 }
 
@@ -78,9 +76,7 @@ void loop()
     Serial.println(key+" "+value+" "+kind);
   
   
-
-
-  //DM.synch();
+  DM.synch();
 
   while(true);
 }

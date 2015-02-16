@@ -75,11 +75,14 @@ public:
 			client->println(F(",0$"));
 		} else 
     		Serial.println(F("Failed"));
-	} 
+	}
+
+	void writeMeasure() { writeData(key, value, "GM"); }
+	void writeConfig() { writeConfig(key, value, "GC"); }
 
 	/**
 	 */
-	void readData()
+	String readData()
 	{
 		bool receiving=false;
 		while (!receiving)
@@ -87,11 +90,10 @@ public:
 
 		String response;
 		getResponseBody(&response);
-		Serial.print("--> ");
-		Serial.println(response);
-		if (response.length()) 
-			parseData(response);
-	}
+		//Serial.println(response);
+
+		return response;
+	}	
 
 	/** Gives the body of the chunked HTTP Response
 	 */
@@ -131,45 +133,18 @@ public:
 		String split_comma;
 
 		split_sharp = getToken(str, '#');
-		Serial.println(split_sharp);
+		delay(1000);
 
-		/*
-		int pos = 0;
-		do {
-			split_comma = getToken(split_sharp, ',');
-			Serial.println(split_comma);
-
-			if (pos == 1)
-			pos++;
-		} while (split_comma.length());
-		*/
-
-		for (int pos = 0; pos < 4; pos++) {
-			split_comma = getToken(split_sharp, ',');
+		// check the 5 elements of each token GM/GC
+		for (int pos = 0; pos < 5; pos++) {
+			split_comma = getToken(&split_sharp, ',');
 
 			switch(pos) {
 				case 1: if (split_comma.equals("GM")) return;	// we're only interested in GC"
 				case 2: *key = split_comma; break;
 				case 3: *value = split_comma; break;
-				default: break;
 			}
 		}
-
-		/*
-		split_sharp = getToken(str, '#'))
-		if ((split_comma = getToken(split_sharp, ',')) == "GM") {
-			split_sharp.remove(0, split_comma.length());
-			split_comma = getToken(split_sharp, ',');
-		}
-
-		
-		str->remove(0, split_sharp->length());
-
-		while (char_in = str.charAt(i))
-			if (char_in == '#')
-				token = str.substring(from, to);
-			to++;
-		*/
 	}
 
 	/** Given a string, return the first occurrence of the token if the string is splitted by the delimiter
@@ -185,16 +160,21 @@ public:
 			return "";
 
 		int index = str->indexOf(delimiter, 0);
-		//Serial.println(index);
-		//delay(1000);
-		if (index != -1) {
-			token = str->substring(0, index);
-			//Serial.println(token);
-			*str = str->substring(index+1);
-			//Serial.println(*str);
-			return token;
+
+		switch (index) {
+		    case -1:	// delimiter was not found
+		    	token = *str;  
+				*str = "";
+		      	break;
+		    case 0:
+		    	token = "";
+		      	*str = str->substring(index+1);
+		      	break;
+		    default:
+		    	token = str->substring(0, index);
+		    	*str = str->substring(index+1);
 		}
-		return "";
+		return token;
 	}
 protected:
 private:

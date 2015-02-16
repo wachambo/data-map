@@ -45,10 +45,11 @@ public:
 	 */
 	~LinkedList() { clear(); }
 	
+	// TODO : not need since size is public
 	/** Returns current size of LinkedList
 		@return size
 	 */
-	int getSize() { return size; }		// TODO : not need since size is public
+	int getSize() { return size; }		
 	
 	/** Get the previous node where the node with the specified key should be
 		@param key
@@ -71,7 +72,7 @@ public:
 	 */
 	LinkedList* remove(const K& key);
 
-	// TODO not need
+	// TODO : NOT USED
 	V* getValue(const K& key) {
 		Node<K,V>* prev;
 		Node<K,V>* current;
