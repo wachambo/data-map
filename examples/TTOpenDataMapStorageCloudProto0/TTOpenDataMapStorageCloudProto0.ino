@@ -76,8 +76,6 @@ void loop()
     Serial.println(key+" "+value+" "+kind);
   
   
-
-
   DM.synch();
 
   while(true);

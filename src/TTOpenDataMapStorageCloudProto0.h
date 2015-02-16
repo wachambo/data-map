@@ -88,7 +88,8 @@ public:
 					Serial.print("\n\n\n");
 					Serial.println(key +"-"+ value);
 					Serial.print("\n\n\n");
-					add(key, value, "config");
+					//add(key, value, "config");
+					addConfig(key, value);
 				}
 			}
 		}

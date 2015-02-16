@@ -75,7 +75,10 @@ public:
 			client->println(F(",0$"));
 		} else 
     		Serial.println(F("Failed"));
-	} 
+	}
+
+	void writeMeasure() { writeData(key, value, "GM"); }
+	void writeConfig() { writeConfig(key, value, "GC"); }
 
 	/**
 	 */

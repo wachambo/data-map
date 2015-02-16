@@ -15,12 +15,18 @@
   The iterator iterates over the config list and measures lista as a unique list
   First, starts at measures list, and when it fishes, continue with measures list
  */
-class DataMapIterator: public virtual DataMap
+//class DataMap;
+
+class DataMapIterator //: public virtual DataMap
 {
 //variables
 public:
 protected:
 private:
+	static Node<String, String>* itMeasures;	// iterator over measures list
+	static Node<String, String>* itConfigs;	// iterator over configs list
+	
+	// TODO : it and kind are NOT USED
 	Node<String, String>* it;
 	String kind;		// "measures" or "configs"
 
@@ -28,12 +34,19 @@ private:
 public:
 	/** Constructor
 	 */
-	DataMapIterator(): DataMap() , it(configs->root), kind(NULL) {}
+	//DataMapIterator(): DataMap() , it(configs->root), kind(NULL) {}
+	DataMapIterator(DataMap *dm) {
+		if (dm) {
+			itMeasures = dm->measures->root;
+			itConfigs = dm->configs->root;
+		} else itMeasures = itConfigs = NULL;
+	}
 
 	/** Reset iterator: iterator points to configs root, if any, else points to measures root
 		@return if root node exists
 	 */
-	bool first() 
+		// TODO : not used
+	/*bool first() 
 	{
 		DoublyLinkedList<String, String>* list;
 		if ((it = configs->root)) {
@@ -45,8 +58,19 @@ public:
 		}
 
 		return (list != NULL);
-	}
-	
+	}*/
+
+	static bool nextMeasure(String* key, String* value) { return next(key, value, itMeasures); }
+	static bool nextConfig(String* key, String* value) { return next(key, value, itConfigs); }
+protected:
+	/*DataMapIterator( const DataMapIterator &c ): DataMap(c) {
+		//it = configs->root;
+		itMeasures = measures->root;
+		itConfigs = configs->root;
+	}*/
+	// Default behavior
+	//DataMapIterator& operator=( const DataMapIterator& c );
+private:
 	/** Return key and value of the current node 
 		And update the iterator to next node in the iteration
 		(Remember the measures list goes after configurations list)
@@ -54,20 +78,13 @@ public:
 		@param[out] value of the next node
 		@return if the next node exists
 	 */
+	/*
 	bool next(String* key, String* value, String* kind)
 	{
 		if (it) {
 			*key = it->key;
 			*value = it->value;
 			*kind = this->kind;
-			//key = &(it->key);
-			//value = &(it->value);
-			//kind = &(this->kind);
-
-			/*
-			Serial.println(*key +" " +*value +" "+*kind);
-			Serial.println(it->key +" " +it->value);
-			*/
 	
 			// if it 
 			if (it == configs->last) { 
@@ -78,14 +95,19 @@ public:
 		} 
 		key = value = kind = NULL;
 		return false;
+	}*/
+
+	static bool next(String* key, String* value, Node<String, String> *it)
+	{
+		if (it) {
+			*key = it->key;
+			*value = it->value;
+			it = it->next;
+			return true;
+		}
+		key = value = NULL;
+		return false;
 	}
-protected:
-	DataMapIterator( const DataMapIterator &c ): DataMap(c) {
-		it = configs->root;
-	}
-	// Default behavior
-	//DataMapIterator& operator=( const DataMapIterator& c );
-private:
 }; //DataMapIterator
 
 #endif //__DATAMAPITERATOR_H__

@@ -6,10 +6,10 @@ void setup() {
   // initialize serial communications
   Serial.begin(9600);
 
-  Serial.println(DM.add("sensor0", "30 min", "config"));
-  Serial.println(DM.add("temperature", "25.8", "measure"));
-  Serial.println(DM.add("location" , "4234.34234, 2895.234", "measure"));
-  Serial.println(DM.add("zulu" , "12:09", "measure"));
+  Serial.println(DM.addConfig("sensor0", "30 min"));
+  Serial.println(DM.addMeasure("temperature", "25.8"));
+  Serial.println(DM.addMeasure("location" , "4234.34234, 2895.234"));
+  Serial.println(DM.addMeasure("zulu" , "12:09"));
 }
 
 void loop() { 
@@ -17,15 +17,15 @@ void loop() {
   //String s;
   //char buffer[30];
 
-  Serial.println(DM.lookup("sensor0", "config"));
-  Serial.println(DM.lookup("temperature", "measure"));
-  Serial.println(DM.lookup("location", "measure"));
-  Serial.println(DM.lookup("zulu", "measure"));
+  Serial.println(DM.lookupConfig("sensor0"));
+  Serial.println(DM.lookupMeasure("temperature"));
+  Serial.println(DM.lookupMeasure("location"));
+  Serial.println(DM.lookupMeasure("zulu"));
   
   
-  Serial.println(DM.remove("temperature", "measure"));
-  Serial.println(DM.lookup("temperature", "measure"));
-  Serial.println(DM.lookup("zulu", "measure"));
+  Serial.println(DM.removeMeasure("temperature"));
+  Serial.println(DM.lookupMeasure("temperature"));
+  Serial.println(DM.lookupMeasure("zulu"));
   
   while(true);
 }
