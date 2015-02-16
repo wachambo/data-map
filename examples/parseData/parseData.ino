@@ -42,7 +42,7 @@ void parseData(String* str, String* key, String* value) {
 
 	split_sharp = getToken(str, '#');
 	Serial.println(split_sharp);
-	delay(1000);
+	delay(2000);
 
 	for (int pos = 0; pos < 5; pos++) {
 		split_comma = getToken(&split_sharp, ',');
