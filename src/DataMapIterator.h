@@ -23,8 +23,9 @@ class DataMapIterator //: public virtual DataMap
 public:
 protected:
 private:
-	static Node<String, String>* itMeasures;	// iterator over measures list
-	static Node<String, String>* itConfigs;	// iterator over configs list
+	DataMap *dm;
+	Node<String, String> *itMeasures;	// iterator over measures list
+	Node<String, String> *itConfigs;	// iterator over configs list
 	
 	// TODO : it and kind are NOT USED
 	Node<String, String>* it;
@@ -35,33 +36,29 @@ public:
 	/** Constructor
 	 */
 	//DataMapIterator(): DataMap() , it(configs->root), kind(NULL) {}
-	DataMapIterator(DataMap *dm) {
+	DataMapIterator(DataMap *dm) : dm(dm), itMeasures(NULL), itConfigs(NULL) {}
+
+	/** Init iterators: iterators points to configs root and measures root
+		@return if data map is not null
+	 */
+	bool init() 
+	{
 		if (dm) {
 			itMeasures = dm->measures->root;
 			itConfigs = dm->configs->root;
-		} else itMeasures = itConfigs = NULL;
+			return true
+		}
+		itMeasures = itConfigs = NULL;
+		return false;
 	}
 
-	/** Reset iterator: iterator points to configs root, if any, else points to measures root
-		@return if root node exists
-	 */
-		// TODO : not used
-	/*bool first() 
-	{
-		DoublyLinkedList<String, String>* list;
-		if ((it = configs->root)) {
-			list = configs;
-			kind = "GC";
-		} else if ((it = measures->root)) {
-			list = measures;
-			kind = "GM";
-		}
 
-		return (list != NULL);
-	}*/
-
-	static bool nextMeasure(String* key, String* value) { return next(key, value, itMeasures); }
-	static bool nextConfig(String* key, String* value) { return next(key, value, itConfigs); }
+	bool nextMeasure(String* key, String* value) { 
+		//Serial.println((uint16_t)itMeasures, HEX);
+		return next(key, value, itMeasures); 
+		//Serial.println((uint16_t)itMeasures, HEX);
+	}
+	bool nextConfig(String* key, String* value) { return next(key, value, itConfigs); }
 protected:
 	/*DataMapIterator( const DataMapIterator &c ): DataMap(c) {
 		//it = configs->root;
@@ -73,31 +70,12 @@ protected:
 private:
 	/** Return key and value of the current node 
 		And update the iterator to next node in the iteration
-		(Remember the measures list goes after configurations list)
 		@param[out] key of the next node
 		@param[out] value of the next node
+		@param[in/out] pointer to reference iterator
 		@return if the next node exists
 	 */
-	/*
-	bool next(String* key, String* value, String* kind)
-	{
-		if (it) {
-			*key = it->key;
-			*value = it->value;
-			*kind = this->kind;
-	
-			// if it 
-			if (it == configs->last) { 
-				it = measures->root; 
-				this->kind = "GM";
-			} else it = it->next;
-			return true;
-		} 
-		key = value = kind = NULL;
-		return false;
-	}*/
-
-	static bool next(String* key, String* value, Node<String, String> *it)
+	bool next(String* key, String* value, Node<String, String> *&it)
 	{
 		if (it) {
 			*key = it->key;
@@ -108,6 +86,7 @@ private:
 		key = value = NULL;
 		return false;
 	}
+
 }; //DataMapIterator
 
 #endif //__DATAMAPITERATOR_H__

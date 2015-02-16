@@ -23,24 +23,18 @@ void loop() {
   Serial.println(DM.lookupMeasure("location"));
   Serial.println(DM.lookupMeasure("zulu"));
   
-  
-  Serial.println(DM.removeMeasure("temperature"));
-  Serial.println(DM.lookupMeasure("temperature"));
-  Serial.println(DM.lookupMeasure("zulu"));
-  
   Serial.println("------------------------");
   delay(1000);
   String key, value;
-  //Serial.println(DM.first());
 
-  //while(DM.next(&key, &value))
-  //  Serial.println(key+" "+value);
 
+  
+  DMIterator.init();
   while(DMIterator.nextMeasure(&key, &value))
     Serial.println(key+" "+value);    
-  
+
   while(DMIterator.nextConfig(&key, &value))
-    Serial.println(key+" "+value);  
+    Serial.println(key+" "+value);
 
   while(true);
 }
